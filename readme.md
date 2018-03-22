@@ -2,7 +2,7 @@
 
 # SenseUI-Waterfall-Stacked-Barchart
 
-- A waterfall Stacked barchart with the option of sorting the total values of the 1st dimension for more Pareto-like look & feel
+- A waterfall Stacked barchart with the option of sorting by either the first dimension or the total value of the stacked bars which mimics a Pareto look and feel
 
 ### Installation
 - `npm install`
