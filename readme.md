@@ -5,8 +5,7 @@
 - A waterfall Stacked barchart with the option of sorting by either the first dimension or the total value of the stacked bars which mimics a Pareto look and feel
 
 ### Installation
-- `npm install`
-- `npm start`
+- Extract into your extensions folder the [final zip file](dist/SenseUI-WaterfallStackedBarchart.zip)
 
 ### Usage
 
@@ -26,3 +25,8 @@
 - Bar color Hex Values, separated by comma
 - Text color Hex values, separated by comma
 - ![Settings](assets/settings.png "Settings") 
+
+## Modify
+- `npm install`
+- `npm start`
+- Edit code under src/. Webpack will lint, babel and minify the code for you
