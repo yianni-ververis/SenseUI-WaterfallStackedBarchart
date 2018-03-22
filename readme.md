@@ -19,10 +19,10 @@
 - Tooltip with all of the Dimensions, their colors and their values, with a total
 - X-axis labels are clickable and select 1st dimension
 - Legend items are clickable and select 2nd dimension
-![Selecting Legends](assets/screenshot2.png "Selecting Legends") 
+- ![Selecting Legends](assets/screenshot2.png "Selecting Legends") 
 
 #### Settings   
 - Sort Dimension (Desc), for a Pareto look and feel without the line
 - Bar color Hex Values, separated by comma
 - Text color Hex values, separated by comma
-![Settings](assets/settings.png "Settings") 
+- ![Settings](assets/settings.png "Settings") 
