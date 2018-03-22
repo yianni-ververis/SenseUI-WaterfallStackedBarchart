@@ -1,14 +1,14 @@
 {
-	"name": "SenseUI-StackedBarParetto",
+	"name": "SenseUI-WaterfallStackedBarchart",
 	"description": "Chart visualization template",
 	"icon": "bar-chart-horizontal",
 	"type": "visualization",
 	"version": "1.0.0",
 	"author": "yianni.ververis@qlik.com",
-	"homepage": "https://github.com/yianni-ververis/SenseUI-StackedBarParetto",
+	"homepage": "https://github.com/yianni-ververis/SenseUI-WaterfallStackedBarchart",
 	"keywords": "qlik-sense, visualization",
 	"license": "MIT",
-	"repository": "https://github.com/yianni-ververis/SenseUI-StackedBarParetto",
+	"repository": "https://github.com/yianni-ververis/SenseUI-WaterfallStackedBarchart",
 	"dependencies": {
 		"qlik-sense": ">=3.0.x"
 	}
