@@ -22,9 +22,14 @@
 
 #### Settings   
 - Sort Dimension (Desc), for a Pareto look and feel without the line
+- Show Cumulative Line
+- Cumulative Line Color
+- Set the Cumulative Percentage for the line
 - Bar color Hex Values, separated by comma
 - Text color Hex values, separated by comma
-- ![Settings](assets/settings.png "Settings") 
+- Set the Y-Axis positioning, left
+- ![Settings](assets/settings1.png "Settings") 
+- ![Settings](assets/settings2.png "Settings") 
 
 ## Modify
 - `npm install`

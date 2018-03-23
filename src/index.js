@@ -17,7 +17,7 @@ define([
 			support: properties.support,
 			paint: function ($element, layout) {
 				var vars = {
-					v: '1.0.3',
+					v: '1.0.5',
 					id: layout.qInfo.qId,
 					name: 'SUI-StackedBarParetto',
 					data: layout.qHyperCube.qDataPages[0].qMatrix.filter(d => !d[0].qIsNull),
@@ -37,14 +37,19 @@ define([
 					element: $element,
 					layout: layout,
 					this: this,
-					margin: { top: 20, right: 20, bottom: 50, left: 60 },
+					margin: { top: 20, right: 60, bottom: 50, left: 60 },
 					precision: true,
-					sort: (layout.vars.sort) ? true : false ,
+					sort: (layout.vars.sort) ? true : false,
 					palette: ['#332288', '#88CCEE', '#117733', '#DDCC77', '#CC6677', '#3399CC', '#99CC66', '#275378', '#B35A01', '#B974FD', '#993300', '#99CCCC', '#669933', '#898989', '#EDA1A1', '#C6E2A9', '#D4B881', '#137D77', '#D7C2EC', '#FF5500', '#15DFDF', '#93A77E', '#CB5090', '#BFBFBF'],
 					paletteText: ['#FFFFFF', '#000000', '#FFFFFF', '#000000', '#000000', '#000000', '#000000', '#FFFFFF', '#000000', '#000000', '#000000', '#000000', '#000000', '#000000', '#000000', '#000000', '#000000', '#000000', '#000000', '#000000', '#000000', '#000000', '#000000', '#000000'],
 					bar: {
 						fillColor: (layout.vars.bar.fillColor) ? layout.vars.bar.fillColor.split(',') : ['#332288', '#88CCEE', '#117733', '#DDCC77', '#CC6677', '#3399CC', '#99CC66', '#275378', '#B35A01', '#B974FD', '#993300', '#99CCCC', '#669933', '#898989', '#EDA1A1', '#C6E2A9', '#D4B881', '#137D77', '#D7C2EC', '#FF5500', '#15DFDF', '#93A77E', '#CB5090', '#BFBFBF'],
 						textColor: (layout.vars.bar.textColor) ? layout.vars.bar.textColor.split(',') : ['#FFFFFF', '#000000', '#FFFFFF', '#000000', '#000000', '#000000', '#000000', '#FFFFFF', '#000000', '#000000', '#000000', '#000000', '#000000', '#000000', '#000000', '#000000', '#000000', '#000000', '#000000', '#000000', '#000000', '#000000', '#000000', '#000000'],
+					},
+					line: {
+						show: (layout.vars.line.show) ? true : false,
+						color: (layout.vars.line.color) ? layout.vars.line.color : '#9e9e9e',
+						position: (layout.vars.line.position) ? layout.vars.line.position : 0.8,
 					},
 					label: {
 						visible: 1,
@@ -59,7 +64,8 @@ define([
 					},
 					tooltip: {
 						visible: 1
-					}
+					},
+					yaxis: (layout.vars.yaxis) ? true : false,
 				};
 				util.totalRows = (util.totalRows) ? util.totalRows : layout.qHyperCube.qSize.qcy;
 				const tip = util.tooltip.element(d3);
@@ -297,11 +303,11 @@ define([
 				var x = d3.scaleBand()
 					.rangeRound([0, width])
 					.padding(padding)
-				var y = d3.scaleLinear()
+				let y = d3.scaleLinear()
 					.range([height, 0])
 				// var ycum = d3.scaleLinear().domain([0, 1]).range([height, 0]); // Pareto Line
 				var xAxis = d3.axisBottom(x);
-				var yAxis = d3.axisLeft(y)
+				var yAxis = (vars.yaxis) ? d3.axisRight(y) : d3.axisLeft(y);
 				x.domain(vars.dataRef.map(function (d) { return d.dimension1; }));
 				y.domain([0, d3.max(vars.dataRef, function (d) { return d.end; })]);
 				var chart = d3.select(`#${vars.id}_inner .content`).append("svg")
@@ -316,6 +322,9 @@ define([
 					.selectAll("text");
 				chart.append("g")
 					.attr("class", "y axis")
+					.attr("transform", function() {
+						return (vars.yaxis) ? `translate(${width}, 0)` : -1;
+					})					
 					.call(yAxis
 						.tickFormat(function (d) {
 							return util.roundNumber(vars, d)
@@ -334,6 +343,8 @@ define([
 						if (vars.tooltip.visible) {
 							tip
 								.html(util.tooltip.html(d, vars))
+								// .style("left", d3.event.pageX - ($('.sui-tip').width() / 2 + 7) + "px")
+								// .style("top", d3.event.pageY - $('.sui-tip').height() - 30 + "px")
 								.style("left", d3.event.pageX - ($('.sui-tip').width() / 2) + "px")
 								.style("top", d3.event.pageY - $('.sui-tip').height() - 10 + "px")
 								.style("display", "inline-block")
@@ -380,7 +391,7 @@ define([
 					// .text(function (d) {	return util.roundNumber(d.end); })
 					.text(function (d) { return d.percentage; })
 
-				// Add x acis interactivity
+				// Add x axis interactivity
 				chart.selectAll(".x.axis .tick")
 					.on("click", function (d) {
 						vars.this.backendApi.selectValues(0, [vars.dataRef2[d].data[0].qElemNumber1], true);
@@ -396,6 +407,20 @@ define([
 				// 	.attr('class', 'line')
 				// 	.attr('d', guide);
 
+				// Add the Cumulative Pareto line
+				if (vars.line.show) {
+					var guide = d3.line()
+						.x(function (d) { return x(d.title) + (x.bandwidth() / 2); })
+						.y(function () { return y(totalAmount*vars.line.position) })
+					chart.append('path')
+						.data([vars.dataRef3])
+						.style("stroke", vars.line.color)
+						.style("stroke-width", 2)
+						.style("stroke-dasharray", '5,5')
+						.attr('d', guide);
+				}
+
+				// console.log(vars)
 				console.info(`%c ${vars.name} ${vars.v}: `, 'color: red', `${vars.id} Loaded!`);
 				return qlik.Promise.resolve();
 			}
