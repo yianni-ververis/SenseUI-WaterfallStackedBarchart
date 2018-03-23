@@ -17,7 +17,7 @@ define([
 			support: properties.support,
 			paint: function ($element, layout) {
 				var vars = {
-					v: '1.0.5',
+					v: '1.0.6',
 					id: layout.qInfo.qId,
 					name: 'SUI-StackedBarParetto',
 					data: layout.qHyperCube.qDataPages[0].qMatrix.filter(d => !d[0].qIsNull),
@@ -374,7 +374,7 @@ define([
 					.style("font-size", `10px`)
 					.attr("text-anchor", "middle")
 					.attr("x", function (d) { return x(d.title) + (x.bandwidth() / 2); })
-					.attr("y", function (d) { return y(d.end) - 5; })
+					.attr("y", function (d) { return y((d.end) ? d.end : d.total) - 5; })
 					.text(function (d) { return util.roundNumber(vars, d.total); })
 
 				// Add the text for the Totals
